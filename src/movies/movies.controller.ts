@@ -1,44 +1,45 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from '@nestjs/common';
+import { CreateMovieDto } from './dto/create-movie.dto';
+import { UpdateMovieDto } from './dto/update-movie.dto';
+import { Movie } from './entities/movie.entity';
+import { MoviesService } from './movies.service';
 
 // Controller(매개변수) 에서 매개변수가 url의 엔트리 포인트가 된다.
-@Controller()
+@Controller('movies')
 export class MoviesController {
-    @Get()
-    getAll() 
-    {
-        return "This will return all movies";
-    }
 
-    @Get("/search")
-    search(@Query("year") searchingYear : string)
+    // 매개변수에 접근 제한자를 사용한 변수를 쓰면
+    // 객체가 가지는 변수를 만든것이나 마찬가지임.
+    constructor(private readonly moviesService : MoviesService){} 
+
+    @Get()
+    getAll() : Movie[]
     {
-        return `We are searching for a movie made after : ${searchingYear}`;
+        return this.moviesService.getAll();
     }
 
     @Get("/:id")
-    getOne(@Param("id") id : string)
+    getOne(@Param("id") movieId : number) : Movie 
     {
-        return `This will return one movie with the id : ${id}`;
+        console.log(typeof movieId);
+        return this.moviesService.getOne(movieId);
     }
 
     @Post()
-    create(@Body() movieData)
+    create(@Body() movieData : CreateMovieDto)
     {
-        return movieData;
+        return this.moviesService.create(movieData);
     }
 
     @Delete("/:id")
-    remove(@Param("id") movieId : string)
+    remove(@Param("id") movieId : number)
     {
-        return `This will delete a movie with the id : ${movieId}`;
+        return this.moviesService.deleteOne(movieId);
     }
     // put은 전체 업데이트 patch는 일부분 업데이트
     @Patch("/:id")
-    patch(@Param('id') movieId : string, @Body() updateData)
+    patch(@Param('id') movieId : number, @Body() updateData : UpdateMovieDto)
     {
-        return {
-            updateMovie : movieId,
-            ...updateData,
-        };
+        return this.moviesService.update(movieId, updateData);
     }
 }
