@@ -2,6 +2,9 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
+// nestjs는 Express,Fastify(Express보다 빠름) 위에서 돌아감.
+// Express -> Fastify, Fastify -> Express 로 전환이 가능하기떄문에 
+// 둘중 하나의 프레임워크 방식으로 쓰는것보다 nestjs 방식으로 하면 두가지 프레임워크에서 잘 돌아감.
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // 유효성 검사 파이프 (미들웨어 같은거라고 봐도됨)

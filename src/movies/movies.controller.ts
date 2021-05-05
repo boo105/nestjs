@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Req } from '@nestjs/common';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { Movie } from './entities/movie.entity';
@@ -11,7 +11,7 @@ export class MoviesController {
     // 매개변수에 접근 제한자를 사용한 변수를 쓰면
     // 객체가 가지는 변수를 만든것이나 마찬가지임.
     constructor(private readonly moviesService : MoviesService){} 
-
+    
     @Get()
     getAll() : Movie[]
     {
